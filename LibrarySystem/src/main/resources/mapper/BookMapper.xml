@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.circle.mapper.BookMapper">
+
+    <resultMap id="BaseResultMap" type="Book">
+        <result column="id" property="id"></result>
+        <result column="name" property="name"></result>
+        <result column="number" property="number"></result>
+        <result column="place" property="place"></result>
+        <result column="pid" property="pid"></result>
+    </resultMap>
+
+    <resultMap id="bookAndPublisher" type="Book">
+        <result column="id" property="id"></result>
+        <result column="name" property="name"></result>
+        <result column="number" property="number"></result>
+        <result column="place" property="place"></result>
+        <result column="pid" property="pid"></result>
+        <association property="publisher" javaType="Publisher">
+            <result column="pid" property="id"></result>
+            <result column="pname" property="name"></result>
+            <result column="phone" property="phone"></result>
+            <result column="email" property="email"></result>
+            <result column="address" property="address"></result>
+        </association>
+    </resultMap>
+
+    <select id="selectById" resultMap="bookAndPublisher">
+        select *,b.id bid,b.name bname,p.name pname from Book b join publisher p where b.pid=p.id and b.id=#{id}
+    </select>
+
+    <select id="selectPage" resultMap="bookAndPublisher">
+        select *,b.id bid,b.name bname,p.name pname from Book b join publisher p where b.pid=p.id ORDER BY bid asc
+    </select>
+
+</mapper>
